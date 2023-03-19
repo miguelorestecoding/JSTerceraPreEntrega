@@ -1,6 +1,18 @@
+// Variables
+let impuestosAlDolar = [];
+
+
+// Clases
+class ImpuestosAlDolar {
+  constructor(nombre, factor) {
+    this.nombre = nombre;
+    this.factor = factor;
+  }
+}
+
 const btnCreaImpuesto = document.getElementById("btnCreaImpuesto");
 
-btnCreaImpuesto.addEventListener("click", agregarTipoDeImpuestos());
+btnCreaImpuesto.addEventListener("click", () => {agregarTipoDeImpuestos()});
 
 // Agregar tipos de Impuestos
 function agregarTipoDeImpuestos() {
@@ -9,7 +21,6 @@ function agregarTipoDeImpuestos() {
   );
 
   if (nombreDeImpuesto == null) {
-    11;
     alert(
       "⛔ Creando Impuestos has presionado Cancelar, vuelves al Menu Principal!"
     );
@@ -32,6 +43,16 @@ function agregarTipoDeImpuestos() {
         parseFloat(parseInt(factorDelImpuesto) / 100)
       );
       impuestosAlDolar.push(impuestoACrear);
+      localStorage.setItem("impuestosAlDolarls", JSON.stringify(impuestosAlDolar) )
     }
   }
+}
+
+impuestosAlDolar = localStorage.getItem(JSON.parse(impuestosAlDolarls))
+console.log(impuestosAlDolar)
+
+for (const impuesto of impuestosAlDolar) {
+  let h3ImpuetosExistentes = document.createElement("h3");
+  h3ImpuetosExistentes.innerHTML = impuestosAlDolar;
+  document.body.appendChild(h3ImpuetosExistentes);
 }
