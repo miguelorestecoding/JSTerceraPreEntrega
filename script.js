@@ -41,9 +41,12 @@ function agregarTipoDeImpuestos() {
       impuestosAlDolar.push(impuestoACrear);
       console.log(impuestosAlDolar);
       let imprimeImpuestos = document.getElementById("impuestosExistentes");
+      imprimeImpuestos.innerHTML = "";
       for (const impuesto of impuestosAlDolar) {
         imprimeImpuestos.innerHTML +=
           "<h3>" +
+          (parseInt(impuestosAlDolar.indexOf(impuesto)) + 1) +
+          " - " +
           impuesto.nombre +
           ": " +
           impuesto.factor * 100 +
