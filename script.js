@@ -9,11 +9,24 @@ class ImpuestosAlDolar {
   }
 }
 
-function inicializarElementos() {
-  formularioImpuestos = document.getElementById("formularioImpuestos");
-  inputNombreImpuesto = document.getElementById("inputNombreImpuesto");
-  inputFactorImpuesto = document.getElementById("inputFactorImpuesto");
-}
+// function inicializarElementos() {
+//   formularioImpuestos = document.getElementById("formularioImpuestos");
+//   inputNombreImpuesto = document.getElementById("inputNombreImpuesto");
+//   inputFactorImpuesto = document.getElementById("inputFactorImpuesto");
+// }
+
+// formularioImpuestos.onsubmit = (e) => {
+//   e.preventDefault();
+//   const inputs = e.target.children;
+//   estudiantes.push(
+//     new Estudiante({
+//       nombre: inputs[0].value,
+//       edad: inputs[1].value,
+//       curso: inputs[2].value,
+//     })
+//   );
+//   document.body.append(" ALUMNO REGISTRADO ");
+// };
 
 // Agregar tipos de Impuestos
 function agregarTipoDeImpuestos() {
