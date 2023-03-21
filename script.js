@@ -1,6 +1,5 @@
 // Variables
 let impuestosAlDolar = [];
-let h3 = document.createElement("h3");
 
 // Clases
 class ImpuestosAlDolar {
@@ -8,6 +7,12 @@ class ImpuestosAlDolar {
     this.nombre = nombre;
     this.factor = factor;
   }
+}
+
+function inicializarElementos() {
+  formularioImpuestos = document.getElementById("formularioImpuestos");
+  inputNombreImpuesto = document.getElementById("inputNombreImpuesto");
+  inputFactorImpuesto = document.getElementById("inputFactorImpuesto");
 }
 
 // Agregar tipos de Impuestos
