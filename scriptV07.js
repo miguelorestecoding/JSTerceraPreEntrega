@@ -49,6 +49,7 @@ function validarFormularioImpuestos(event) {
     impuestos.push(impuesto);
     formularioImpuestos.reset();
     pintarImpuestos();
+    actulizaImpuestosStorage();
     console.log(
       `Array Impuestos luego de Creacion:  ${JSON.stringify(impuestos)}`
     );
@@ -57,6 +58,30 @@ function validarFormularioImpuestos(event) {
   }
 }
 
+//STORAGE
+//Obtener Impuestos Storage
+function obtenerImpuestosStorage() {
+  let impuestosJSON = localStorage.getItem("impuestos");
+  if (impuestosJSON != null) {
+    impuestos = JSON.parse(impuestosJSON);
+    pintarImpuestos();
+  }
+}
+
+//Actualiza Storage
+function actulizaImpuestosStorage() {
+  let impuestosJSON = JSON.stringify(impuestos);
+  localStorage.setItem("impuestos", impuestosJSON);
+}
+//Limpiar Storage
+const limpiarStorageBtn = document.getElementById("limpiar-storage");
+limpiarStorageBtn.addEventListener("click", function () {
+  localStorage.clear();
+  impuestos = [];
+  pintarImpuestos();
+});
+
+//IMPUESTOS
 // Eliminar Impuestos
 function eliminarImpuesto(idImpuesto) {
   let columnaImpuestoBorrar = document.getElementById(
@@ -70,6 +95,7 @@ function eliminarImpuesto(idImpuesto) {
     `Array Impuestos luego de Eliminacion:  ${JSON.stringify(impuestos)}`
   );
   columnaImpuestoBorrar.remove();
+  actulizaImpuestosStorage();
 }
 
 function pintarImpuestos() {
@@ -110,6 +136,7 @@ function pintarImpuestos() {
 function main() {
   inicializarElementos();
   inicializarEventos();
+  obtenerImpuestosStorage();
 }
 
 //Ejecuta / Llama a main
