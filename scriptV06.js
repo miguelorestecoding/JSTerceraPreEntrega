@@ -3,12 +3,14 @@ let impuestos = [];
 
 //Inicialización de Variables
 let formularioImpuestos;
+let contadorImpuestosId = 0;
 let inputNombreImpuesto;
 let inputPorcentajeImpuesto;
 
 //Crea Objetos
 class Impuesto {
-  constructor(nombreImpuesto, porcentajeImpuesto) {
+  constructor(idImpuesto, nombreImpuesto, porcentajeImpuesto) {
+    this.idImpuesto = idImpuesto;
     this.nombreImpuesto = nombreImpuesto.toUpperCase();
     this.porcentajeImpuesto = porcentajeImpuesto;
   }
@@ -30,6 +32,8 @@ function inicializarEventos() {
 // Validaciones
 function validarFormulario(event) {
   event.preventDefault();
+  contadorImpuestosId++;
+  let idImpuesto = contadorImpuestosId;
   let nombreImpuesto = inputNombreImpuesto.value;
   let porcentajeImpuesto = parseInt(inputPorcentajeImpuesto.value);
 
@@ -37,11 +41,14 @@ function validarFormulario(event) {
     (impuesto) => impuesto.nombreImpuesto === nombreImpuesto
   );
   if (!NombreImpuestoExiste) {
-    let impuesto = new Impuesto(nombreImpuesto, porcentajeImpuesto);
+    let impuesto = new Impuesto(idImpuesto, nombreImpuesto, porcentajeImpuesto);
 
     impuestos.push(impuesto);
     formularioImpuestos.reset();
     pintarImpuestos();
+    console.log(
+      `Array Impuestos luego de Creacion:  ${JSON.stringify(impuestos)}`
+    );
   } else {
     alert("Ya existe un impuesto con ese nombre, utiliza otro");
   }
@@ -49,10 +56,15 @@ function validarFormulario(event) {
 // Eliminar Impuestos
 function eliminarImpuesto(idImpuesto) {
   let columnaImpuestoBorrar = document.getElementById(
-    `columnaImpuesto-${idImpuesto + 1}`
+    `columnaImpuesto-${idImpuesto}`
   );
-  let indiceBorrar = idImpuesto;
+  let indiceBorrar = impuestos.findIndex(
+    (impuesto) => impuesto.idImpuesto === idImpuesto
+  );
   impuestos.splice(indiceBorrar, 1);
+  console.log(
+    `Array Impuestos luego de Eliminacion:  ${JSON.stringify(impuestos)}`
+  );
   columnaImpuestoBorrar.remove();
 }
 
@@ -61,12 +73,12 @@ function pintarImpuestos() {
   impuestos.forEach((impuesto) => {
     let column = document.createElement("div");
     column.className = "col-md-4 mt-3";
-    column.id = `columnaImpuesto-${impuestos.indexOf(impuesto) + 1}`;
+    column.id = `columnaImpuesto-${impuesto.idImpuesto}`;
     column.innerHTML = `
             <div class="card">
                 <div class="card-body">
                 <p class="card-text">ID:
-                    <b>${impuestos.indexOf(impuesto) + 1}</b>
+                    <b>${impuesto.idImpuesto}</b>
                 </p>
                 <p class="card-text">Nombre del Impuesto:
                     <b>${impuesto.nombreImpuesto}</b>
@@ -76,9 +88,7 @@ function pintarImpuestos() {
                 </p>
                 </div>
                 <div class="card-footer">
-                    <button class="btn btn-danger" id="botonEliminarImpuesto-${
-                      impuestos.indexOf(impuesto) + 1
-                    }" >Eliminar</button>
+                    <button class="btn btn-danger" id="botonEliminarImpuesto-${impuesto.idImpuesto}" >Eliminar</button>
                 </div>
             </div>`;
     ``;
@@ -86,10 +96,9 @@ function pintarImpuestos() {
     contenedorImpuestos.append(column);
 
     let botonEliminarImpuesto = document.getElementById(
-      `botonEliminarImpuesto-${impuestos.indexOf(impuesto) + 1}`
+      `botonEliminarImpuesto-${impuesto.idImpuesto}`
     );
-    botonEliminarImpuesto.onclick = () =>
-      eliminarImpuesto(impuestos.indexOf(impuesto));
+    botonEliminarImpuesto.onclick = () => eliminarImpuesto(impuesto.idImpuesto);
   });
 }
 
