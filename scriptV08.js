@@ -1,18 +1,36 @@
 //Inicialización de Arrays
 let impuestos = [];
+let dolares = [];
 
 //Inicialización de Variables
 let formularioImpuestos;
 let contadorImpuestosId = 0;
 let inputNombreImpuesto;
 let inputPorcentajeImpuesto;
+let contenedorImpuestos;
 
-//Crea Objetos
+let formularioDolares;
+let contadorDolaresId = 0;
+let inputNombreDolar;
+let inputImpuestosAplicados;
+let contenedorDolares;
+
+let listaImpuestos;
+
+//Crea Clases de Objetos
+// Objeto Impuestos
 class Impuesto {
   constructor(idImpuesto, nombreImpuesto, porcentajeImpuesto) {
     this.idImpuesto = idImpuesto;
     this.nombreImpuesto = nombreImpuesto.toUpperCase();
     this.porcentajeImpuesto = porcentajeImpuesto;
+  }
+}
+//Objeto Dolares
+class Dolar {
+  constructor(NombreDolar, ImpuestosAplicados) {
+    this.NombreDolar = NombreDolar;
+    this.ImpuestosAplicados = ImpuestosAplicados;
   }
 }
 
@@ -21,15 +39,24 @@ function inicializarElementos() {
   formularioImpuestos = document.getElementById("formularioImpuestos");
   inputNombreImpuesto = document.getElementById("inputNombreImpuesto");
   inputPorcentajeImpuesto = document.getElementById("inputPorcentajeImpuesto");
+  contenedorImpuestos = document.getElementById("contenedorImpuestos");
+
+  formularioDolares = document.getElementById("formularioDolares");
+  inputNombreDolar = document.getElementById("inputNombreDolar");
+  inputImpuestosAplicados = document.getElementById("inputImpuestosAplicados");
+  contenedorDolares = document.getElementById("contenedorDolares");
+
+  listaImpuestos = document.getElementById("impuestos-lista");
 }
 
 //Incilializa Eventos
 function inicializarEventos() {
   formularioImpuestos.onsubmit = (event) => validarFormularioImpuestos(event);
+  formularioDolares.onsubmit = (event) => validarFormularioDolares(event);
 }
 
 // ** FUNCIONES
-// Validaciones
+// Valida Formulario Impuestos
 function validarFormularioImpuestos(event) {
   event.preventDefault();
   contadorImpuestosId++;
@@ -50,12 +77,32 @@ function validarFormularioImpuestos(event) {
     formularioImpuestos.reset();
     pintarImpuestos();
     actulizaImpuestosStorage();
-    console.log(
-      `Array Impuestos luego de Creacion:  ${JSON.stringify(impuestos)}`
-    );
+    mostrarListaImpuestos();
   } else {
     alert("Ya existe un impuesto con ese nombre, utiliza otro");
   }
+}
+//Valida Formulario Dolares
+function validarFormularioDolares(event) {
+  event.preventDefault();
+  let NombreDolar = inputNombreDolar;
+  let ImpuestosAplicados = inputImpuestosAplicados;
+}
+
+//Lista Impuestos: Lista los impuestos creados para que sean seleccionables.
+function mostrarListaImpuestos() {
+  impuestos.forEach((impuesto, idImpuesto) => {
+    const li = document.createElement("li");
+    const checkbox = document.createElement("input");
+    checkbox.type = "checkbox";
+    checkbox.name = `impuesto-${idImpuesto}`;
+    checkbox.value = JSON.stringify(impuesto);
+    const label = document.createElement("label");
+    label.innerHTML = `${impuesto.nombreImpuesto} - Percentaje: ${impuesto.porcentajeImpuesto})`;
+    li.appendChild(checkbox);
+    li.appendChild(label);
+    listaImpuestos.appendChild(li);
+  });
 }
 
 //STORAGE
@@ -91,11 +138,9 @@ function eliminarImpuesto(idImpuesto) {
     (impuesto) => impuesto.idImpuesto === idImpuesto
   );
   impuestos.splice(indiceBorrar, 1);
-  console.log(
-    `Array Impuestos luego de Eliminacion:  ${JSON.stringify(impuestos)}`
-  );
   columnaImpuestoBorrar.remove();
   actulizaImpuestosStorage();
+  mostrarListaImpuestos();
 }
 
 function pintarImpuestos() {
@@ -137,6 +182,7 @@ function main() {
   inicializarElementos();
   inicializarEventos();
   obtenerImpuestosStorage();
+  mostrarListaImpuestos();
 }
 
 //Ejecuta / Llama a main

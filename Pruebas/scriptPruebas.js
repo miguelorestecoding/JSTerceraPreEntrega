@@ -1,15 +1,56 @@
-// let div = document.getElementById("app");
-let parrafo = document.getElementById("parrafo1");
-console.log(document.getElementById("app").innerHTML);
-console.log(parrafo.innerHTML);
+const personajesLOTR = [
+  {
+    nombre: "Frodo",
+    edad: 33,
+    poder: 7,
+  },
+  {
+    nombre: "Gandalf",
+    edad: 2019,
+    poder: 10,
+  },
+  {
+    nombre: "Aragorn",
+    edad: 87,
+    poder: 9,
+  },
+];
 
-// Obtener el elemento h2
-const h2 = document.querySelector("h2");
+// Crea lista de personajes para seleccionar
+const lista = document.getElementById("personajes-lista");
 
-// Crear el elemento h3 y agregar contenido
-const h3 = document.createElement("h3");
-const texto = document.createTextNode("Nuevo título");
-h3.appendChild(texto);
+personajesLOTR.forEach((personaje, index) => {
+  const li = document.createElement("li");
+  const checkbox = document.createElement("input");
+  checkbox.type = "checkbox";
+  checkbox.name = `personaje-${index}`;
+  checkbox.value = JSON.stringify(personaje);
+  const label = document.createElement("label");
+  label.innerHTML = `${personaje.nombre} (Edad: ${personaje.edad}, Poder: ${personaje.poder})`;
+  li.appendChild(checkbox);
+  li.appendChild(label);
+  lista.appendChild(li);
+});
 
-// Agregar el elemento h3 como hijo del h2 utilizando appendChild
-h2.appendChild(h3);
+// crea batalla
+const form = document.getElementById("batalla-form");
+
+form.addEventListener("submit", (event) => {
+  event.preventDefault();
+
+  const nombreBatalla = document.getElementById("nombre-batalla").value;
+  const luchadores = [];
+
+  const checkboxes = document.querySelectorAll("input[type=checkbox]:checked");
+
+  checkboxes.forEach((checkbox) => {
+    luchadores.push(JSON.parse(checkbox.value));
+  });
+
+  const batalla = {
+    nombre: nombreBatalla,
+    luchadores: luchadores,
+  };
+
+  console.log(batalla);
+});
