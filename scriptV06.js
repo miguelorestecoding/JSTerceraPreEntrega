@@ -25,22 +25,25 @@ function inicializarElementos() {
 
 //Incilializa Eventos
 function inicializarEventos() {
-  formularioImpuestos.onsubmit = (event) => validarFormulario(event);
+  formularioImpuestos.onsubmit = (event) => validarFormularioImpuestos(event);
 }
 
 // ** FUNCIONES
 // Validaciones
-function validarFormulario(event) {
+function validarFormularioImpuestos(event) {
   event.preventDefault();
   contadorImpuestosId++;
   let idImpuesto = contadorImpuestosId;
   let nombreImpuesto = inputNombreImpuesto.value;
   let porcentajeImpuesto = parseInt(inputPorcentajeImpuesto.value);
-
   const NombreImpuestoExiste = impuestos.some(
     (impuesto) => impuesto.nombreImpuesto === nombreImpuesto
   );
-  if (!NombreImpuestoExiste) {
+
+  if (nombreImpuesto === "" || isNaN(porcentajeImpuesto)) {
+    alert("Por favor completar todos los campos");
+    formularioImpuestos.reset();
+  } else if (!NombreImpuestoExiste) {
     let impuesto = new Impuesto(idImpuesto, nombreImpuesto, porcentajeImpuesto);
 
     impuestos.push(impuesto);
@@ -53,6 +56,7 @@ function validarFormulario(event) {
     alert("Ya existe un impuesto con ese nombre, utiliza otro");
   }
 }
+
 // Eliminar Impuestos
 function eliminarImpuesto(idImpuesto) {
   let columnaImpuestoBorrar = document.getElementById(
