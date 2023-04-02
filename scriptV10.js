@@ -3,6 +3,9 @@ let impuestos = [];
 let dolares = [];
 
 //Inicialización de Variables
+let inputPrecioDolarBancoNacion;
+let dolarBancoNacion;
+
 let formularioImpuestos;
 let contadorImpuestosId = 0;
 let inputNombreImpuesto;
@@ -36,6 +39,10 @@ class Dolar {
 
 //Inicializa Elementos
 function inicializarElementos() {
+  inputPrecioDolarBancoNacion = document.getElementById(
+    "inputPrecioDolarBancoNacion"
+  );
+
   formularioImpuestos = document.getElementById("formularioImpuestos");
   inputNombreImpuesto = document.getElementById("inputNombreImpuesto");
   inputPorcentajeImpuesto = document.getElementById("inputPorcentajeImpuesto");
@@ -108,6 +115,8 @@ function validarFormularioDolares(event) {
   dolares.push(dolar);
 
   console.log(JSON.stringify(dolares));
+  console.log(totalPorcentaje);
+  console.log(ImpuestosAplicados);
 
   formularioDolares.reset();
   pintarDolares();
@@ -124,6 +133,20 @@ function desmarcarCheckboxImpuestos() {
 }
 
 //STORAGE
+//Actualiza Storage
+function actualizaDolarBancoNacionStorage() {
+  dolarBancoNacion = inputPrecioDolarBancoNacion.value;
+  localStorage.setItem("precioDolarBancoNacion", dolarBancoNacion);
+}
+function actulizaImpuestosStorage() {
+  let impuestosJSON = JSON.stringify(impuestos);
+  localStorage.setItem("impuestos", impuestosJSON);
+}
+function actulizaDolaresStorage() {
+  let dolaresJSON = JSON.stringify(dolares);
+  localStorage.setItem("dolares", dolaresJSON);
+}
+
 //Obtener desde Storage
 function obtenerImpuestosStorage() {
   let impuestosJSON = localStorage.getItem("impuestos");
@@ -139,15 +162,7 @@ function obtenerDolaresStorage() {
     pintarDolares();
   }
 }
-//Actualiza Storage
-function actulizaImpuestosStorage() {
-  let impuestosJSON = JSON.stringify(impuestos);
-  localStorage.setItem("impuestos", impuestosJSON);
-}
-function actulizaDolaresStorage() {
-  let dolaresJSON = JSON.stringify(dolares);
-  localStorage.setItem("dolares", dolaresJSON);
-}
+
 //Limpiar Storage
 const limpiarStorageBtn = document.getElementById("limpiar-storage");
 limpiarStorageBtn.addEventListener("click", function () {
@@ -200,7 +215,7 @@ function pintarImpuestos() {
                       <input type="checkbox" name="checkAgregaImpuesto-${
                         impuesto.idImpuesto
                       }" value=${JSON.stringify(impuesto)}>
-                        Inculir
+                        Incluir
                     </label>
                 </div>
             </div>`;
@@ -241,6 +256,11 @@ function pintarDolares() {
                 <p class="card-text">Total Porcentaje:
                     <b>${dolar.totalPorcentaje}</b>
                 </p>
+                <p class="card-text">Valor Compra:
+                    <b>${
+                      dolarBancoNacion * (1 + dolar.totalPorcentaje / 100)
+                    }</b>
+                </p>
                 </div>
                 <div class="card-footer">
                     <button class="btn btn-danger" id="botonEliminarDolar-${
@@ -271,16 +291,15 @@ function eliminarDolar(idDolar) {
 function main() {
   inicializarElementos();
   inicializarEventos();
-  obtenerImpuestosStorage();
-}
-
-//Función main
-function main() {
-  inicializarElementos();
-  inicializarEventos();
+  actualizaDolarBancoNacionStorage();
   obtenerImpuestosStorage();
   obtenerDolaresStorage();
 }
 
 //Ejecuta / Llama a main
 main();
+
+/* Pendiente
+ * Si los nombres del dolar tienen espacio da error al querer pasar a JSON.
+ * Validaciones para que el nombre del dolar no pueda ser dejado en Blanco y sin la aplicacion de ningun impuesto
+ */
