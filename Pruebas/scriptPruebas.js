@@ -16,7 +16,6 @@ const personajesLOTR = [
   },
 ];
 
-// Crea lista de personajes para seleccionar
 const lista = document.getElementById("personajes-lista");
 
 personajesLOTR.forEach((personaje, index) => {
@@ -32,8 +31,8 @@ personajesLOTR.forEach((personaje, index) => {
   lista.appendChild(li);
 });
 
-// crea batalla
 const form = document.getElementById("batalla-form");
+const infoDiv = document.getElementById("batalla-info");
 
 form.addEventListener("submit", (event) => {
   event.preventDefault();
@@ -52,5 +51,9 @@ form.addEventListener("submit", (event) => {
     luchadores: luchadores,
   };
 
-  console.log(batalla);
+  const p = document.createElement("p");
+  p.innerHTML = `Batalla: ${batalla.nombre} - Luchadores: ${batalla.luchadores
+    .map((luchador) => luchador.nombre)
+    .join(", ")}`;
+  infoDiv.appendChild(p);
 });
