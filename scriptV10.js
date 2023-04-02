@@ -26,10 +26,11 @@ class Impuesto {
 }
 //Objeto Dolares
 class Dolar {
-  constructor(idDolar, NombreDolar, ImpuestosAplicados) {
+  constructor(idDolar, NombreDolar, ImpuestosAplicados, totalPorcentaje) {
     this.idDolar = idDolar;
     this.NombreDolar = NombreDolar;
     this.ImpuestosAplicados = ImpuestosAplicados;
+    this.totalPorcentaje = totalPorcentaje;
   }
 }
 
@@ -74,7 +75,6 @@ function validarFormularioImpuestos(event) {
     formularioImpuestos.reset();
     pintarImpuestos();
     actulizaImpuestosStorage();
-    // mostrarListaImpuestos();
   } else {
     alert("Ya existe un impuesto con ese nombre, utiliza otro");
   }
@@ -94,15 +94,33 @@ function validarFormularioDolares(event) {
   let idDolar = contadorDolaresId;
   let nombreDolar = inputNombreDolar.value;
   let ImpuestosAplicados = inputImpuestosAplicados;
+  let totalPorcentaje = 0;
+  for (i = 0; i < ImpuestosAplicados.length; i++) {
+    totalPorcentaje += ImpuestosAplicados[i].porcentajeImpuesto;
+  }
 
-  let dolar = new Dolar(idDolar, nombreDolar, ImpuestosAplicados);
+  let dolar = new Dolar(
+    idDolar,
+    nombreDolar,
+    ImpuestosAplicados,
+    totalPorcentaje
+  );
   dolares.push(dolar);
 
   console.log(JSON.stringify(dolares));
 
   formularioDolares.reset();
   pintarDolares();
+  desmarcarCheckboxImpuestos();
   actulizaDolaresStorage();
+}
+
+//Limpia Checkbox
+function desmarcarCheckboxImpuestos() {
+  let allcheckboxes = document.querySelectorAll("input[type=checkbox]");
+  allcheckboxes.forEach(function (checkbox) {
+    checkbox.checked = false;
+  });
 }
 
 //STORAGE
@@ -203,7 +221,7 @@ function pintarDolares() {
   contenedorDolares.innerHTML = "";
   dolares.forEach((dolar) => {
     let column = document.createElement("div");
-    let listaImpuestos = document.createElement("ul");
+    // let listaImpuestos = document.createElement("ul");
     column.className = "col-md-4 mt-3";
     column.id = `columnaDolar-${dolar.idDolar}`;
     column.innerHTML = `
@@ -219,6 +237,9 @@ function pintarDolares() {
                     <b>${dolar.ImpuestosAplicados.map(
                       (impuesto) => impuesto.nombreImpuesto
                     ).join(", ")}</b>
+                </p>
+                <p class="card-text">Total Porcentaje:
+                    <b>${dolar.totalPorcentaje}</b>
                 </p>
                 </div>
                 <div class="card-footer">
@@ -258,6 +279,7 @@ function main() {
   inicializarElementos();
   inicializarEventos();
   obtenerImpuestosStorage();
+  obtenerDolaresStorage();
 }
 
 //Ejecuta / Llama a main
