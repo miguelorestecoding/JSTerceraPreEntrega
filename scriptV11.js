@@ -4,7 +4,7 @@ let dolares = [];
 
 //Inicialización de Variables
 let inputPrecioDolarBancoNacion;
-let dolarBancoNacion;
+let precioDolarBancoNacion;
 
 let formularioImpuestos;
 let contadorImpuestosId = 0;
@@ -17,6 +17,8 @@ let contadorDolaresId = 0;
 let inputNombreDolar;
 let inputImpuestosAplicados;
 let contenedorDolares;
+
+let formularioPrecioDolarBancoNacion;
 
 //Crea Clases de Objetos
 // Objeto Impuestos
@@ -52,15 +54,32 @@ function inicializarElementos() {
   inputNombreDolar = document.getElementById("inputNombreDolar");
   inputImpuestosAplicados = document.getElementById("inputImpuestosAplicados");
   contenedorDolares = document.getElementById("contenedorDolares");
+
+  formularioPrecioDolarBancoNacion = document.getElementById(
+    "formularioPrecioDolarBancoNacion"
+  );
 }
 
 //Incilializa Eventos
 function inicializarEventos() {
   formularioImpuestos.onsubmit = (event) => validarFormularioImpuestos(event);
   formularioDolares.onsubmit = (event) => validarFormularioDolares(event);
+  formularioPrecioDolarBancoNacion.onsubmit = (event) =>
+    validarFormularioPrecioDolarBancoNacion(event);
 }
 
 // ** FUNCIONES
+//Valida Formulario Precio Dolar BancoNacion
+function validarFormularioPrecioDolarBancoNacion(event) {
+  event.preventDefault();
+  actualizaDolarBancoNacionStorage();
+  if (precioDolarBancoNacion == "") {
+    alert("No ha ingresado un precio para el dolar valido, por favor revise.");
+  } else {
+    pintarDolares();
+  }
+}
+
 // Valida Formulario Impuestos
 function validarFormularioImpuestos(event) {
   event.preventDefault();
@@ -106,22 +125,28 @@ function validarFormularioDolares(event) {
     totalPorcentaje += ImpuestosAplicados[i].porcentajeImpuesto;
   }
 
-  let dolar = new Dolar(
-    idDolar,
-    nombreDolar,
-    ImpuestosAplicados,
-    totalPorcentaje
-  );
-  dolares.push(dolar);
+  if (nombreDolar != "" && totalPorcentaje != 0) {
+    let dolar = new Dolar(
+      idDolar,
+      nombreDolar,
+      ImpuestosAplicados,
+      totalPorcentaje
+    );
+    dolares.push(dolar);
 
-  console.log(JSON.stringify(dolares));
-  console.log(totalPorcentaje);
-  console.log(ImpuestosAplicados);
+    console.log(JSON.stringify(dolares));
+    console.log(totalPorcentaje);
+    console.log(ImpuestosAplicados);
 
-  formularioDolares.reset();
-  pintarDolares();
-  desmarcarCheckboxImpuestos();
-  actulizaDolaresStorage();
+    formularioDolares.reset();
+    pintarDolares();
+    desmarcarCheckboxImpuestos();
+    actulizaDolaresStorage();
+  } else {
+    alert(
+      "Por favor revisa que estas ingresando un nombre valido para el Dolar y que haya al menos 1 impuesto seleccionado"
+    );
+  }
 }
 
 //Limpia Checkbox
@@ -135,8 +160,8 @@ function desmarcarCheckboxImpuestos() {
 //STORAGE
 //Actualiza Storage
 function actualizaDolarBancoNacionStorage() {
-  dolarBancoNacion = inputPrecioDolarBancoNacion.value;
-  localStorage.setItem("precioDolarBancoNacion", dolarBancoNacion);
+  precioDolarBancoNacion = inputPrecioDolarBancoNacion.value;
+  localStorage.setItem("precioDolarBancoNacion", precioDolarBancoNacion);
 }
 function actulizaImpuestosStorage() {
   let impuestosJSON = JSON.stringify(impuestos);
@@ -204,7 +229,7 @@ function pintarImpuestos() {
                     <b>${impuesto.nombreImpuesto}</b>
                 </p>
                 <p class="card-text">Porcentaje del Impuesto:
-                    <b>${impuesto.porcentajeImpuesto}</b>
+                    <b>%${impuesto.porcentajeImpuesto}</b>
                 </p>
                 </div>
                 <div class="card-footer">
@@ -254,11 +279,11 @@ function pintarDolares() {
                     ).join(", ")}</b>
                 </p>
                 <p class="card-text">Total Porcentaje:
-                    <b>${dolar.totalPorcentaje}</b>
+                    <b>%${dolar.totalPorcentaje}</b>
                 </p>
                 <p class="card-text">Valor Compra:
-                    <b>${
-                      dolarBancoNacion * (1 + dolar.totalPorcentaje / 100)
+                    <b>$${
+                      precioDolarBancoNacion * (1 + dolar.totalPorcentaje / 100)
                     }</b>
                 </p>
                 </div>
