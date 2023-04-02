@@ -83,10 +83,35 @@ function validarFormularioImpuestos(event) {
   }
 }
 //Valida Formulario Dolares
+// function validarFormularioDolares(event) {
+//   event.preventDefault();
+//   let NombreDolar = inputNombreDolar;
+//   let ImpuestosAplicados = inputImpuestosAplicados;
+// }
+
+//Valida Formulario Dolares - Version desde crea batalla de ChatGPT
 function validarFormularioDolares(event) {
   event.preventDefault();
-  let NombreDolar = inputNombreDolar;
+  // const nombreBatalla = document.getElementById("nombre-batalla").value;
+  inputImpuestosAplicados = [];
+  let checkboxesImpuestosAplicados = document.querySelectorAll(
+    "input[type=checkbox]:checked"
+  );
+  checkboxesImpuestosAplicados.forEach((checkbox) => {
+    inputImpuestosAplicados.push(JSON.parse(checkbox.value));
+  });
+  let nombreDolar = inputNombreDolar.value;
   let ImpuestosAplicados = inputImpuestosAplicados;
+
+  let dolar = new Dolar(nombreDolar, ImpuestosAplicados);
+  dolares.push(dolar);
+
+  console.log(JSON.stringify(dolares));
+
+  formularioDolares.reset();
+  pintarDolares();
+  actulizaDolaresStorage();
+  // mostrarListaImpuestos();
 }
 
 //Lista Impuestos: Lista los impuestos creados para que sean seleccionables.
@@ -163,9 +188,13 @@ function pintarImpuestos() {
                 </p>
                 </div>
                 <div class="card-footer">
-                    <button class="btn btn-danger" id="botonEliminarImpuesto-${impuesto.idImpuesto}" >Eliminar</button>
+                    <button class="btn btn-danger" id="botonEliminarImpuesto-${
+                      impuesto.idImpuesto
+                    }" >Eliminar</button>
                     <label>
-                      <input type="checkbox" name="checkAgregaImpuesto-${impuesto.idImpuesto}" value=${impuesto.porcentajeImpuesto}>
+                      <input type="checkbox" name="checkAgregaImpuesto-${
+                        impuesto.idImpuesto
+                      }" value=${JSON.stringify(impuesto)}>
                         Inculir
                     </label>
                 </div>
