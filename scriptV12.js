@@ -144,7 +144,7 @@ function validarFormularioDolares(event) {
     actulizaDolaresStorage();
   } else {
     alert(
-      "Por favor revisa que estas ingresando un nombre valido para el Dolar y que haya al menos 1 impuesto seleccionado"
+      "Por favor revisa que estas ingresando un nombre valido para el Dolar y que haya al menos 1 impuesto seleccionado. Si no visualizas como seleccionar impuestos quizas debas primero crearlos."
     );
   }
 }
@@ -220,7 +220,7 @@ function pintarImpuestos() {
     column.className = "col-md-4 mt-3";
     column.id = `columnaImpuesto-${impuesto.idImpuesto}`;
     column.innerHTML = `
-            <div class="card">
+            <div class="card  d-flex flex-wrap justify-content-center align-items-center">
                 <div class="card-body">
                 <p class="card-text">ID:
                     <b>${impuesto.idImpuesto}</b>
@@ -265,13 +265,18 @@ function pintarDolares() {
     column.className = "col-md-4 mt-3";
     column.id = `columnaDolar-${dolar.idDolar}`;
     column.innerHTML = `
-            <div class="card">
-                <div class="card-body">
+            <div class="card h-100">
+                <div class="card-body text-center">
                 <p class="card-text">ID:
                     <b>${dolar.idDolar}</b>
                 </p>
-                <p class="card-text">Nombre del Dolar:
+                <p class="card-text bg-warning">Nombre del Dolar:
                     <b>${dolar.NombreDolar}</b>
+                </p>
+                <p class="card-text bg-warning">Valor Compra:
+                    <b>$${
+                      precioDolarBancoNacion * (1 + dolar.totalPorcentaje / 100)
+                    }</b>
                 </p>
                 <p class="card-text">Impuestos Aplicados:
                     <b>${dolar.ImpuestosAplicados.map(
@@ -281,13 +286,8 @@ function pintarDolares() {
                 <p class="card-text">Total Porcentaje:
                     <b>%${dolar.totalPorcentaje}</b>
                 </p>
-                <p class="card-text">Valor Compra:
-                    <b>$${
-                      precioDolarBancoNacion * (1 + dolar.totalPorcentaje / 100)
-                    }</b>
-                </p>
                 </div>
-                <div class="card-footer">
+                <div class="card-footer text-center">
                     <button class="btn btn-danger" id="botonEliminarDolar-${
                       dolar.idDolar
                     }" >Eliminar</button>
