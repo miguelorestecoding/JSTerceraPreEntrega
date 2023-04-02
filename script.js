@@ -220,7 +220,7 @@ function pintarImpuestos() {
     column.className = "col-md-4 mt-3";
     column.id = `columnaImpuesto-${impuesto.idImpuesto}`;
     column.innerHTML = `
-            <div class="card  d-flex flex-wrap justify-content-center align-items-center">
+            <div class="card">
                 <div class="card-body">
                 <p class="card-text">ID:
                     <b>${impuesto.idImpuesto}</b>
