@@ -15,7 +15,7 @@ let inputNombreDolar;
 let inputImpuestosAplicados;
 let contenedorDolares;
 
-let listaImpuestos;
+// let listaImpuestos;
 
 //Crea Clases de Objetos
 // Objeto Impuestos
@@ -46,7 +46,7 @@ function inicializarElementos() {
   inputImpuestosAplicados = document.getElementById("inputImpuestosAplicados");
   contenedorDolares = document.getElementById("contenedorDolares");
 
-  listaImpuestos = document.getElementById("impuestos-lista");
+  // listaImpuestos = document.getElementById("impuestos-lista");
 }
 
 //Incilializa Eventos
@@ -77,7 +77,7 @@ function validarFormularioImpuestos(event) {
     formularioImpuestos.reset();
     pintarImpuestos();
     actulizaImpuestosStorage();
-    mostrarListaImpuestos();
+    // mostrarListaImpuestos();
   } else {
     alert("Ya existe un impuesto con ese nombre, utiliza otro");
   }
@@ -90,20 +90,20 @@ function validarFormularioDolares(event) {
 }
 
 //Lista Impuestos: Lista los impuestos creados para que sean seleccionables.
-function mostrarListaImpuestos() {
-  impuestos.forEach((impuesto, idImpuesto) => {
-    const li = document.createElement("li");
-    const checkbox = document.createElement("input");
-    checkbox.type = "checkbox";
-    checkbox.name = `impuesto-${idImpuesto}`;
-    checkbox.value = JSON.stringify(impuesto);
-    const label = document.createElement("label");
-    label.innerHTML = `${impuesto.nombreImpuesto} - Percentaje: ${impuesto.porcentajeImpuesto})`;
-    li.appendChild(checkbox);
-    li.appendChild(label);
-    listaImpuestos.appendChild(li);
-  });
-}
+// function mostrarListaImpuestos() {
+//   impuestos.forEach((impuesto, idImpuesto) => {
+//     const li = document.createElement("li");
+//     const checkbox = document.createElement("input");
+//     checkbox.type = "checkbox";
+//     checkbox.name = `impuesto-${idImpuesto}`;
+//     checkbox.value = JSON.stringify(impuesto);
+//     const label = document.createElement("label");
+//     label.innerHTML = `${impuesto.nombreImpuesto} - Percentaje: ${impuesto.porcentajeImpuesto})`;
+//     li.appendChild(checkbox);
+//     li.appendChild(label);
+//     listaImpuestos.appendChild(li);
+//   });
+// }
 
 //STORAGE
 //Obtener Impuestos Storage
@@ -140,7 +140,7 @@ function eliminarImpuesto(idImpuesto) {
   impuestos.splice(indiceBorrar, 1);
   columnaImpuestoBorrar.remove();
   actulizaImpuestosStorage();
-  mostrarListaImpuestos();
+  // mostrarListaImpuestos();
 }
 
 function pintarImpuestos() {
@@ -164,6 +164,10 @@ function pintarImpuestos() {
                 </div>
                 <div class="card-footer">
                     <button class="btn btn-danger" id="botonEliminarImpuesto-${impuesto.idImpuesto}" >Eliminar</button>
+                    <label>
+                      <input type="checkbox" name="checkAgregaImpuesto-${impuesto.idImpuesto}" value=${impuesto.porcentajeImpuesto}>
+                        Inculir
+                    </label>
                 </div>
             </div>`;
     ``;
@@ -182,7 +186,7 @@ function main() {
   inicializarElementos();
   inicializarEventos();
   obtenerImpuestosStorage();
-  mostrarListaImpuestos();
+  // mostrarListaImpuestos();
 }
 
 //Ejecuta / Llama a main
